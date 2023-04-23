@@ -10,38 +10,59 @@
                 <span class="iconfont icon-shanchu del-icon" @click="delFile"></span>
             </div>
         </template>
-        <template v-if="uploadType == 'img'">
-            <div class="img-input-box">
-                <div class="iconfont icon-tianjia add-icon" v-show="!curFile"></div>
-                <input type="file" @input="inputChange" v-show="!curFile" />
-                <img class="preview-img" v-show="imgPreviewSrc" :src="imgPreviewSrc" />
-                <div class="img-mask-box" v-show="curFile">
-                    <span class="iconfont icon-fangda"></span>
-                    <span class="iconfont icon-shanchu" @click="delFile"></span>
+        <div class="img-input-root" v-if="uploadType == 'img'">
+            <div class="img-input-box" :style="{ 'display': item - 1 <= curImgList.length ? 'block' : 'none' }"
+                v-for="item in limit" :key="item">
+                <div class="iconfont icon-tianjia add-icon" v-if="!curImgList[item-1]"></div>
+                <input type="file" @input="inputChange" v-if="!curImgList[item-1]" />
+                <img class="preview-img" v-if="curImgList[item-1]" :src="curImgList[item-1]['src']" />
+                <div class="img-mask-box" v-if="curImgList[item-1]">
+                    <span class="iconfont icon-fangda" @click="imgPreview"></span>
+                    <span class="iconfont icon-shanchu" @click="delImg(item-1)"></span>
                 </div>
             </div>
-        </template>
+        </div>
+        <ImgPreview v-if="isPreview" :previewList="previewList" :onClose="imgPreview" />
     </div>
 </template>
 
 <script setup>
 import { ref, reactive, toRefs, onMounted, getCurrentInstance, computed, watch } from 'vue'
+import ImgPreview from './ImgPreview.vue'
+
 
 const props = defineProps({
     uploadType: {
         type: String,
         default: 'img'
+    },
+    limit: {
+        type: Number,
+        default: 4
     }
 })
 
 const curFile = ref(null)
-const imgPreviewSrc = ref('')
 const fileName = ref('')
+
+const curImgList = ref([])
+const isPreview = ref(false) // 大图预览
+
+const previewList = computed(()=>{
+      const arr = []
+      curImgList.value.forEach(item=>{
+        arr.push(item.src)
+      })
+      return arr
+})
 
 watch(curFile, (newFile) => {
     if (newFile) {
-        getFileName(newFile)
-        localImgToBase64(newFile)
+        if(props.uploadType == 'img'){
+            localImgToBase64(newFile)
+        }else{
+            getFileName(newFile)
+        }
     }
 })
 
@@ -57,7 +78,12 @@ function inputChange(e) {
 
 function delFile() {
     curFile.value = null
-    imgPreviewSrc.value = ''
+}
+
+function delImg(index) {
+    const oldArr = curImgList.value
+    oldArr.splice(index,1)
+    curImgList.value = oldArr
 }
 
 function checkFileType(curType) {
@@ -76,7 +102,12 @@ function localImgToBase64(file) {
         const reader = new FileReader()
         reader.readAsDataURL(file)
         reader.onload = function () {
-            imgPreviewSrc.value = reader.result
+            const oldArr = curImgList.value
+            oldArr.push({
+                src:reader.result,
+                file
+            })
+            curImgList.value = oldArr
         }
     }
 }
@@ -84,6 +115,11 @@ function localImgToBase64(file) {
 // 文件名称
 function getFileName(file) {
     file ? fileName.value = file.name : ''
+}
+
+// 大图预览
+function imgPreview() {
+    isPreview.value = !isPreview.value++
 }
 
 </script>
@@ -121,6 +157,10 @@ function getFileName(file) {
     margin-left: 6px;
 }
 
+.img-input-root{
+    display: flex;
+}
+
 .img-input-box {
     width: 140px;
     height: 140px;
@@ -128,6 +168,11 @@ function getFileName(file) {
     border: 1px solid #999;
     border-radius: 6px;
     position: relative;
+    margin-right: 5px;
+}
+
+.img-input-box:last-child{
+    margin-right: 0;
 }
 
 .img-input-box input {
