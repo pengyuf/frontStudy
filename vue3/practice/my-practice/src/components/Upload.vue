@@ -13,12 +13,12 @@
         <div class="img-input-root" v-if="uploadType == 'img'">
             <div class="img-input-box" :style="{ 'display': item - 1 <= curImgList.length ? 'block' : 'none' }"
                 v-for="item in limit" :key="item">
-                <div class="iconfont icon-tianjia add-icon" v-if="!curImgList[item-1]"></div>
-                <input type="file" @input="inputChange" v-if="!curImgList[item-1]" />
-                <img class="preview-img" v-if="curImgList[item-1]" :src="curImgList[item-1]['src']" />
-                <div class="img-mask-box" v-if="curImgList[item-1]">
+                <div class="iconfont icon-tianjia add-icon" v-if="!curImgList[item - 1]"></div>
+                <input type="file" @input="inputChange" v-if="!curImgList[item - 1]" />
+                <img class="preview-img" v-if="curImgList[item - 1]" :src="curImgList[item - 1]['src']" />
+                <div class="img-mask-box" v-if="curImgList[item - 1]">
                     <span class="iconfont icon-fangda" @click="imgPreview"></span>
-                    <span class="iconfont icon-shanchu" @click="delImg(item-1)"></span>
+                    <span class="iconfont icon-shanchu" @click="delImg(item - 1)"></span>
                 </div>
             </div>
         </div>
@@ -38,7 +38,7 @@ const props = defineProps({
     },
     limit: {
         type: Number,
-        default: 4
+        default: 1
     }
 })
 
@@ -48,19 +48,19 @@ const fileName = ref('')
 const curImgList = ref([])
 const isPreview = ref(false) // 大图预览
 
-const previewList = computed(()=>{
-      const arr = []
-      curImgList.value.forEach(item=>{
+const previewList = computed(() => {
+    const arr = []
+    curImgList.value.forEach(item => {
         arr.push(item.src)
-      })
-      return arr
+    })
+    return arr
 })
 
 watch(curFile, (newFile) => {
     if (newFile) {
-        if(props.uploadType == 'img'){
+        if (props.uploadType == 'img') {
             localImgToBase64(newFile)
-        }else{
+        } else {
             getFileName(newFile)
         }
     }
@@ -81,9 +81,7 @@ function delFile() {
 }
 
 function delImg(index) {
-    const oldArr = curImgList.value
-    oldArr.splice(index,1)
-    curImgList.value = oldArr
+    curImgList.value.splice(index, 1)
 }
 
 function checkFileType(curType) {
@@ -102,12 +100,10 @@ function localImgToBase64(file) {
         const reader = new FileReader()
         reader.readAsDataURL(file)
         reader.onload = function () {
-            const oldArr = curImgList.value
-            oldArr.push({
-                src:reader.result,
+            curImgList.value.push({
+                src: reader.result,
                 file
             })
-            curImgList.value = oldArr
         }
     }
 }
@@ -157,7 +153,7 @@ function imgPreview() {
     margin-left: 6px;
 }
 
-.img-input-root{
+.img-input-root {
     display: flex;
 }
 
@@ -171,7 +167,7 @@ function imgPreview() {
     margin-right: 5px;
 }
 
-.img-input-box:last-child{
+.img-input-box:last-child {
     margin-right: 0;
 }
 
