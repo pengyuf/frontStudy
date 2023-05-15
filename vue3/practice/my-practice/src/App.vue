@@ -7,7 +7,7 @@
     <!-- <ImgPreview /> -->
     <!-- <button @click="addMessage">消息提示</button> -->
     <Carousel>
-      <CarouselItem v-for="item in 4" :key="item" :translate="(item - 1) * 400">{{ item }}</CarouselItem>
+      <CarouselItem v-for="item in 4" :key="item">{{ item }}</CarouselItem>
     </Carousel>
   </div>
 </template>

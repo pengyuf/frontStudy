@@ -1,12 +1,12 @@
 <template>
     <div ref="root" class="carousel-box" :style="{ 'height': height }">
         <slot></slot>
-        <!-- <div class="item" v-for="item in 4" :key="item">{{ item }}</div> -->
     </div>
 </template>
 
 <script setup>
 import { ref, reactive, toRefs, onMounted, getCurrentInstance, computed } from 'vue'
+import { useCarousel } from './use-carousel'
 
 const props = defineProps({
     height: {
@@ -17,15 +17,18 @@ const props = defineProps({
     initialIndex: {
         type: Number,
         default: 0
+    },
+    autoplay: {
+        type: Boolean,
+        default: true
+    },
+    interval: {
+        type: Number,
+        default: 3000
     }
 })
 
-const root = ref(null)
-
-onMounted(() => {
-    console.log(root.value.offsetWidth)
-})
-
+useCarousel()
 </script>
 <style scoped>
 .carousel-box {
@@ -33,15 +36,5 @@ onMounted(() => {
     border: 1px solid red;
     width: 400px;
     overflow: hidden;
-}
-
-.item {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #f0f0f0;
 }
 </style>

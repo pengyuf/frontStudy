@@ -1,22 +1,20 @@
 <template>
-    <div class="carousel-item" :style="{ transform: transform }">
+    <div class="carousel-item" :style="itemStyle">
         <slot></slot>
     </div>
 </template>
 
 <script setup>
-import { ref, reactive, toRefs, onMounted, getCurrentInstance, computed } from 'vue'
+import { ref, reactive, toRefs, onMounted, getCurrentInstance, computed, unref } from 'vue'
+import { useCarouselItem } from './use-carousel-item'
 
-const props = defineProps({
-    translate: {
-        type: Number,
-        default: 0
+const { translate } = useCarouselItem()
+
+const itemStyle = computed(() => {
+    const transform = `translateX(${unref(translate)}px) scale(1)`
+    return {
+        transform
     }
-})
-
-
-const transform = computed(() => {
-    return `translateX(${props.translate}px) scale(1)`
 })
 
 </script>
