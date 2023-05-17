@@ -3,10 +3,11 @@ import './style.css'
 import App from './App.vue'
 
 import ElIcon from '@cobyte-ui/components/icon'
+import ElButton from '@cobyte-ui/components/button'
 import '@cobyte-ui/theme-chalk/src/index.scss'
 
 // 组件库
-const components = [ElIcon]
+const components = [ElIcon,ElButton]
 
 // 是否已安装标识
 const INSTALLED_KEY = Symbol('INSTALLED_KEY')
