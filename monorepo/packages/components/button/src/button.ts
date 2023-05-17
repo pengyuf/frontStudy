@@ -1,5 +1,6 @@
 import type { ExtractPropTypes, PropType } from 'vue'
 import type Button from './button.vue'
+import { Loading } from '@element-plus/icons-vue'
 
 // 点击事件
 export const buttonEmits = {
@@ -26,18 +27,27 @@ export type ButtonSize = '' | 'default' | 'small' | 'large'
 // 定义props
 export const buttonProps = {
     size: String as PropType<ButtonSize>,
-    type:{
-        type:String as PropType<ButtonType>
+    type: {
+        type: String as PropType<ButtonType>
     },
-    nativeType:{
-        type:String as PropType<ButtonNativeType>,
-        default:'button'
+    nativeType: {
+        type: String as PropType<ButtonNativeType>,
+        default: 'button'
     },
     disabled: Boolean,
     autofocus: Boolean,
     round: Boolean,
     plain: Boolean,
     circle: Boolean,
+    icon: {
+        type: [Object, String] as PropType<object | string>,
+        default: ''
+    },
+    loading: Boolean,
+    loadingIcon: {
+        type: [Object, String] as PropType<object | string>,
+        default: () => Loading
+    }
 } as const
 
 export type ButtonProps = ExtractPropTypes<typeof buttonProps>
