@@ -1,0 +1,22 @@
+@use 'sass:map';
+
+@use './common/var.scss' as *;
+@use './mixins/var' as *;
+@use './mixins/mixins.scss' as *;
+
+// 亮色模式
+:root {
+    color-scheme: light;
+  
+    // --el-color-#{$type}
+    // --el-color-#{$type}-light-{$i}
+    @each $type in (primary, success, warning, danger, error, info) {
+      @include set-css-color-type($colors, $type);
+    }
+
+    @include set-component-css-var('bg-color', $bg-color);
+    // --el-text-color-#{$type}
+    @include set-component-css-var('text-color', $text-color);
+    // --el-border-color-#{$type}
+    @include set-component-css-var('border-color', $border-color);
+}

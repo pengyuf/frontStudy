@@ -16,12 +16,14 @@
   "license": "ISC",
   "dependencies": {
     "@cobyte-ui/components": "workspace:^",
+    "@cobyte-ui/constants": "workspace:^",
     "@cobyte-ui/theme-chalk": "workspace:^",
     "@cobyte-ui/tokens": "workspace:^",
     "@cobyte-ui/utils": "workspace:^",
     "@element-plus/icons-vue": "^2.1.0",
     "@vue/shared": "^3.2.47",
-    "@vueuse/core": "^9.5.0"
+    "@vueuse/core": "^9.5.0",
+    "element-plus": "^2.3.4"
   },
   "devDependencies": {
     "@cobyte-ui/hooks": "workspace:^",
