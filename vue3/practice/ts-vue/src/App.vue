@@ -5,9 +5,9 @@
   <!-- <Upload /> -->
   <!-- <ImgPreview /> -->
   <!-- <button @click="addMessage">消息提示</button> -->
-  <!-- <Carousel>
+  <Carousel>
     <CarouselItem v-for="item in 4" :key="item">{{ item }}</CarouselItem>
-  </Carousel> -->
+  </Carousel>
 </template>
 
 <script setup lang="ts">
