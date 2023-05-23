@@ -1,5 +1,5 @@
 import { isString } from "@vue/shared";
-import { ExtractPropTypes, PropType } from "vue";
+import { ExtractPropTypes, getCurrentInstance, PropType } from "vue";
 import { UPDATE_MODEL_EVENT } from "../../../constants";
 import type Input from './input.vue'
 

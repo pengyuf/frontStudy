@@ -1,4 +1,4 @@
-export function getFloat(number, n) {
+export function getFloat(number:number, n:any) {
 	n = n ? parseInt(n) : 0;
 	if(n <= 0) {
 		return Math.round(number);

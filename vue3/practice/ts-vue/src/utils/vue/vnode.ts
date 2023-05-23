@@ -1,14 +1,37 @@
+import {
+    Comment,
+    Fragment,
+    Text,
+    createBlock,
+    createCommentVNode,
+    isVNode,
+    openBlock,
+  } from 'vue'
 import { isArray } from '@vue/shared'
-import { isVNode } from 'vue'
+import type {
+    VNode,
+    VNodeArrayChildren,
+    VNodeChild,
+    VNodeNormalizedChildren,
+} from 'vue'
+
+export type VNodeChildAtom = Exclude<VNodeChild, Array<any>>
+export type RawSlots = Exclude<
+  VNodeNormalizedChildren,
+  Array<any> | null | string
+>
+export type FlattenVNodes = Array<VNodeChildAtom | RawSlots>
 
 /**
  * 
  * @param {*} children vnode树
  * 结构扁平化
  */
-export const flattedChildren = (children) => {
+export const flattedChildren = (
+    children: FlattenVNodes | VNode | VNodeNormalizedChildren
+) => {
     const vNodes = isArray(children) ? children : [children]
-    const result = []
+    const result:FlattenVNodes = []
     vNodes.forEach(child => {
         if (isArray(child)) {
             result.push(...flattedChildren(child))
