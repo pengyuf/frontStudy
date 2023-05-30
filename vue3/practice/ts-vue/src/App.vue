@@ -6,7 +6,9 @@
   <!-- <ImgPreview /> -->
   <!-- <button @click="addMessage">消息提示</button> -->
   <Carousel>
-    <CarouselItem v-for="item in 4" :key="item">{{ item }}</CarouselItem>
+    <CarouselItem v-for="item in 4" :key="item">
+      <h3>{{ item }}</h3>
+    </CarouselItem>
   </Carousel>
 </template>
 
@@ -21,4 +23,12 @@ import Carousel from './components/carousel/Carousel.vue'
 import CarouselItem from './components/carousel/CarouselItem.vue'
 </script>
 
-<style scoped></style>
+<style scoped>
+.carousel-item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.carousel-item:nth-child(2n + 1) {
+  background-color: #d3dce6;
+}
+</style>

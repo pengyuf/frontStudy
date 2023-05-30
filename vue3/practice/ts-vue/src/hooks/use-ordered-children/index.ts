@@ -2,17 +2,20 @@ import { isVNode, shallowRef } from "vue"
 import { flattedChildren } from "../../utils/vue/vnode"
 import { ComponentInternalInstance, VNode } from 'vue'
 
-const getOrderedChildren = <T>(vm: ComponentInternalInstance,
-    childComponentName: string, children: Record<number, T>): T[] => {
+const getOrderedChildren = <T>(
+    vm: ComponentInternalInstance,
+    childComponentName: string,
+    children: Record<number, T>
+): T[] => {
     const nodes = flattedChildren(vm.subTree).filter(
         (n): n is VNode =>
-            isVNode(n) && (n.type as any)?.name === childComponentName &&
+            isVNode(n) &&
+            (n.type as any)?.__name === childComponentName &&
             !!n.component
     )
     const uids = nodes.map((n) => n.component!.uid)
     return uids.map((uid) => children[uid]).filter((p) => !!p)
 }
-
 
 /**
  * 
@@ -23,7 +26,6 @@ export const useOrderedChildren = <T extends { uid: number }>(
     vm: ComponentInternalInstance,
     childComponentName: string
 ) => {
-    // console.log('getCurrentInstance',vm)
     const children: Record<number, T> = {}
     const orderedChildren = shallowRef<T[]>([])
 
@@ -37,9 +39,10 @@ export const useOrderedChildren = <T extends { uid: number }>(
             (children) => children.uid !== uid
         )
     }
+
     return {
         children: orderedChildren,
         addChild,
-        removeChild
+        removeChild,
     }
 }
